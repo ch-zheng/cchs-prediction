@@ -4,14 +4,20 @@ import random
 # External
 import numpy as np
 
-# Description: Encode CSV table into NumPy array
-
-# Training set
-training_samples = [] # Row format: [race, age, landmarks...]
-training_labels = []
-# Test set
-test_samples = []
-test_labels = []
+# Description: Find CSV table entry based on the initial entries of an encoded row
+# Target format: (race, age, landmarks...)
+targets = (
+    (-1, 0, 0, 0.3122),
+    (0, 2, 0, 0.1364),
+    (-1, 3, 0, 0.2260),
+    (0, 3, 0, 0.2338),
+    (-1, 1, 0, 0.2014),
+    (-1, 1, 0, 0.1178),
+    (-1, 0, 0, 0.3651),
+    (-1, 1, 0, 0.1629),
+    (-1, 1, 0, 0.2695),
+    (-1, 0, 0, 0.2051)
+)
 
 # Encodings
 label_encoding = {'control': 0, 'cchs': 1}
@@ -33,13 +39,12 @@ print('Opening CSV file')
 with open('data/samples.csv') as csv_file:
     rows = iter(csv.reader(csv_file))
     next(rows) # Skip header row
-    count = 0
-    for row in rows:
+    for row_idx, row in enumerate(rows):
         # Get data
-        label = label_encoding[row[0]]
-        race = race_encoding[row[1]]
-        age = age_encoding[row[2]]
-        landmarks = np.array(tuple(map(int, row[3:])), dtype=np.single)
+        label = label_encoding[row[1]]
+        race = race_encoding[row[2]]
+        age = age_encoding[row[3]]
+        landmarks = np.array(tuple(map(int, row[4:])), dtype=np.single)
         # Standardize landmarks to [0, 1]
         landmarks_x = landmarks[::2]
         landmarks_x = landmarks_x - landmarks_x.min()
@@ -53,27 +58,12 @@ with open('data/samples.csv') as csv_file:
         sample[0] = race
         sample[1] = age
         sample[2:] = landmarks
-        # Append to result
-        if random.random() < 0.05 and len(test_samples) < 100:
-            test_samples.append(sample)
-            test_labels.append(label)
-        else:
-            training_samples.append(sample)
-            training_labels.append(label)
-        count = count + 1
-print('Finished reading', count, 'table entries')
-print('Training set size:', len(training_samples))
-print('Test set size:', len(test_samples))
-
-# Save as .npy files
-# Training set
-training_samples = np.stack(training_samples)
-np.save('data/training/samples.npy', training_samples)
-training_labels = np.array(training_labels, dtype=np.single)
-np.save('data/training/labels.npy', training_labels)
-# Test set
-test_samples = np.stack(test_samples)
-np.save('data/test/samples.npy', test_samples)
-test_labels = np.array(test_labels, dtype=np.single)
-np.save('data/test/labels.npy', test_labels)
-print('Arrays saved')
+        # Compare to targets
+        for target in targets:
+            match = True
+            for i, x in enumerate(target):
+                if abs(x - float(sample[i])) >= 0.0001:
+                    match = False
+                    break
+            if match:
+                print(row[0])

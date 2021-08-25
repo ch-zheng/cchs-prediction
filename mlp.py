@@ -68,7 +68,7 @@ def train():
     global epoch
     model.train()
     signal.signal(signal.SIGINT, sigint_handler)
-    last_print_time = time.time()
+    last_print_time = time.time() # Limit console printing rate
     total_batches = math.floor(len(dataloader.dataset) / dataloader.batch_size)
     while True:
         for batch, (X, y) in enumerate(dataloader):
@@ -96,7 +96,8 @@ def evaluate():
             # Get incorrect predictions
             for i, c in enumerate(comparisons):
                 if c.item() == False:
-                    print(32 * batch + i, X[i][:4], y[i])
+                    # Print initial 6 entries of offending sample
+                    print(32 * batch + i, X[i][:6], y[i])
             correct += comparisons.sum().item()
     print(f'Accuracy={correct/total}')
 

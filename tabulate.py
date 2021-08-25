@@ -19,7 +19,7 @@ predictor = dlib.shape_predictor(SHAPE_PREDICTOR_MODEL)
 with open(RESULT_FILE, 'w') as result_file:
     result_writer = csv.writer(result_file)
     # Header row
-    header_row = ['group', 'race', 'age']
+    header_row = ['filename', 'group', 'race', 'age']
     for i in range(68):
         header_row.append('x' + str(i))
         header_row.append('y' + str(i))
@@ -47,7 +47,7 @@ with open(RESULT_FILE, 'w') as result_file:
                     # Landmarking
                     for face in faces:
                         landmarks = predictor(image, face)
-                        row = [group, race, age]
+                        row = [image_filename, group, race, age]
                         for part in landmarks.parts():
                             row.append(part.x)
                             row.append(part.y)

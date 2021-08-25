@@ -4,7 +4,7 @@ import random
 # External
 import numpy as np
 
-# Description: Encode CSV table into NumPy array
+# Description: Encode CSV table into NumPy array files
 
 # Training set
 training_samples = [] # Row format: [race, age, landmarks...]
@@ -36,10 +36,10 @@ with open('data/samples.csv') as csv_file:
     count = 0
     for row in rows:
         # Get data
-        label = label_encoding[row[0]]
-        race = race_encoding[row[1]]
-        age = age_encoding[row[2]]
-        landmarks = np.array(tuple(map(int, row[3:])), dtype=np.single)
+        label = label_encoding[row[1]]
+        race = race_encoding[row[2]]
+        age = age_encoding[row[3]]
+        landmarks = np.array(tuple(map(int, row[4:])), dtype=np.single)
         # Standardize landmarks to [0, 1]
         landmarks_x = landmarks[::2]
         landmarks_x = landmarks_x - landmarks_x.min()
