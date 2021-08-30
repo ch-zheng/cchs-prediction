@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 # External
 import dlib
+import cv2
 
 # Description: Landmarks frontal photos & writes to a CSV file.
 
@@ -43,7 +44,12 @@ with open(RESULT_FILE, 'w') as result_file:
                     # Load image
                     image = dlib.load_rgb_image(str(image_filename))
                     faces = detector(image)
-                    # Rotate image into proper orientation (TODO)
+                    # Rotate image into proper orientation
+                    rotated_count = 0
+                    while rotated_count < 4 and len(faces) == 0:
+                        image = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
+                        faces = detector(image)
+                        rotated_count += 1
                     # Landmarking
                     for face in faces:
                         landmarks = predictor(image, face)
