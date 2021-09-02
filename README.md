@@ -18,7 +18,9 @@ Train a multilayer perceptron neural net
 Contains the following statistical learning algorithms:\
     1. Decision Tree\
     2. Logistic Regression\
-    3. LASSO Regression
+    3. LASSO Regression\
+    4. Linear Regression\
+    5. Polynomial Linear Regression
 
 ## Data Content
 Contains\
