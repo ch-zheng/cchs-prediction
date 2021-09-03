@@ -13,76 +13,108 @@ Original file is located at
 import numpy as np
 from sklearn.model_selection import cross_val_score
 
+# Commented out IPython magic to ensure Python compatibility.
 # clone github repo
-# !git clone https://github.com/ch-zheng/cchs-prediction.git
+!git clone https://github.com/ch-zheng/cchs-prediction.git
 # %cd cchs-prediction/
 
 # load data
 samples = np.load('data/samples.npy')
 labels = np.load('data/labels.npy')
 
-# initialize dictionary
+# train data
+X_train = np.load('data/training/samples.npy')
+y_train = np.load('data/training/labels.npy')
+
+# test data
+X_test = np.load('data/test/samples.npy')
+y_test = np.load('data/test/labels.npy')
+
+"""# Create models"""
+
+# import models
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import Lasso
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import RidgeClassifier
+from sklearn import neighbors
+from sklearn import svm
+from sklearn.naive_bayes import GaussianNB
+
+# initialize models
+tree = DecisionTreeClassifier()
+logreg = LogisticRegression(max_iter=1000)
+# tktk lasso
+# tktk polyreg
+ridge = RidgeClassifier()
+knearest = neighbors.KNeighborsClassifier(n_jobs=-1)
+svm_model = svm.SVC()
+naive = GaussianNB()
+
+# models dictionary
+# add lasso, polyreg to dictionary (TODO)
+models = {
+    "Decision Tree": tree,
+    "Logistic Regression": logreg,
+    "Ridge Regression": ridge,
+    "K-Nearest Neighbors": knearest,
+    "SVM": svm_model,
+    "Naive Bayes": naive
+}
+
+"""# Evaluate models
+
+### Average accuracy
+"""
+
+# avg_accuracy dictionary
 avg_accuracy = {}
 avg_accuracy["Multilayer Perceptron"] = 0.900 # mlp.py
 
-"""# **Decision Tree**"""
+for name, m in models.items():
+  scores = cross_val_score(m, samples, labels, cv=100, n_jobs=-1)
+  avg_accuracy[name] = sum(scores) / len(scores)
 
-from sklearn.tree import DecisionTreeClassifier
-model = DecisionTreeClassifier()
-
-scores = cross_val_score(model, samples, labels, cv=100)
-avg_accuracy["Decision Tree"] = sum(scores) / len(scores)
-
-"""# **Logistic Regression**"""
-
-from sklearn.linear_model import LogisticRegression
-model = LogisticRegression(max_iter=1000)
-
-scores = cross_val_score(model, samples, labels, cv=100, n_jobs=-1)
-avg_accuracy["Logistic Regression"] = sum(scores) / len(scores)
-
-"""# **LASSO Regression**"""
-
-#tktk
-
-"""# **Polynomial Regression**"""
-
-#tktk
-
-"""# **Ridge Regression**"""
-
-from sklearn.linear_model import RidgeClassifier
-model = RidgeClassifier()
-
-scores = cross_val_score(model, samples, labels, cv=100)
-avg_accuracy["Ridge Regression"] = sum(scores) / len(scores)
-
-"""# **K-nearest neighbors**"""
-
-from sklearn import neighbors
-model = neighbors.KNeighborsClassifier(n_jobs=-1)
-
-scores = cross_val_score(model, samples, labels, cv=100)
-avg_accuracy["K-Nearest Neighbors"] = sum(scores) / len(scores)
-
-"""# **Support Vector Machine**"""
-
-from sklearn import svm
-model = svm.SVC()
-
-scores = cross_val_score(model, samples, labels, cv=100, n_jobs=-1)
-avg_accuracy["SVM"] = sum(scores) / len(scores)
-
-"""# **Naive Bayes**"""
-
-from sklearn.naive_bayes import GaussianNB
-model = GaussianNB()
-
-scores = cross_val_score(model, samples, labels, cv=100)
-avg_accuracy["Naive Bayes"] = sum(scores) / len(scores)
-
-"""# Display Metrics"""
-
-# display avg accuracy
+# display avg_accuracy
 for i in sorted(avg_accuracy, key=avg_accuracy.get, reverse=True):
   print("%-30s%-20s" % (i, "{:.2f}".format(avg_accuracy[i]*100)))
+
+"""# Generate coefficients"""
+
+# fit models
+for name, m in models.items():
+  m.fit(X_train, y_train)
+
+# coefficients dictionary
+coeffs = {}
+for name, m in models.items():
+  try:
+    coeffs[name] = m.coef_.tolist()[0] # NOTE: first two coeffs are for race, age
+  except (AttributeError):
+    continue
+
+print(coeffs.keys())
+
+# write coefficient arrays to csv
+import csv
+
+OUTPUT = "data/coefficients.csv"
+
+with open(OUTPUT, 'w') as csvfile:
+  csvWriter = csv.writer(csvfile)
+  
+  # header
+  header = ["model", "race", "age"]
+  for i in range(68):
+    header.append('x' + str(i))
+    header.append('y' + str(i))
+  csvWriter.writerow(header)
+
+  # store coefficients
+  for name, coeff_arr in coeffs.items():
+    row = [name]
+    for c in coeff_arr:
+      row.append(c)
+    csvWriter.writerow(row)
