@@ -16,12 +16,15 @@ Accuracy measured with 100-fold cross-validation.
 Default model parameters used, no hyperparameter tuning done.
 
 ## File Contents
-* cchs\_statistical\_learning.ipynb
-	1. Decision Tree
+* statistical\_learning.ipynb
+	1. Decision tree
 	2. Logistic regression
 	3. LASSO regression
-	4. Linear regression
-	5. Polynomial linear regression
+	4. Polynomial regression
+    5. Ridge regression
+    6. K-nearest neighbors
+    7. Support vector machine
+    8. Naive bayes
 ### Utility
 * tabulate.py: Landmark photos & write to CSV file
 * encode.py: Serialize CSV entries as NumPy array files
