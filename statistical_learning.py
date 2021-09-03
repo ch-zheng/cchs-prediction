@@ -13,9 +13,8 @@ Original file is located at
 import numpy as np
 from sklearn.model_selection import cross_val_score
 
-# Commented out IPython magic to ensure Python compatibility.
 # clone github repo
-!git clone https://github.com/ch-zheng/cchs-prediction.git
+# !git clone https://github.com/ch-zheng/cchs-prediction.git
 # %cd cchs-prediction/
 
 # load data
