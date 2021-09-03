@@ -11,7 +11,9 @@ Predict whether an individual has CCHS based on frontal facial landmarks.
 | Decision tree | 70.04% |
 | Support Vector Machine | 68.68% |
 | Naive Bayes | 53.77% |
+
 Accuracy measured with 100-fold cross-validation.
+Default model parameters used, no hyperparameter tuning done.
 
 ## File Contents
 * cchs\_statistical\_learning.ipynb
