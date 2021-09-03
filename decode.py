@@ -4,7 +4,9 @@ import random
 # External
 import numpy as np
 
-# Description: Find CSV table entry based on the initial entries of an encoded row
+# Description: Find CSV table entry based on the initial entries of an encoded row.
+# Used for finding the corresponding image filename for misclassified samples.
+
 # Target format: (race, age, landmarks...)
 targets = (
     (-1, 0, 0, 0.3122),

@@ -6,12 +6,8 @@ import numpy as np
 
 # Description: Encode CSV table into NumPy array files
 
-# Training set
-training_samples = [] # Row format: [race, age, landmarks...]
-training_labels = []
-# Test set
-test_samples = []
-test_labels = []
+samples = []
+labels = []
 
 # Encodings
 label_encoding = {'control': 0, 'cchs': 1}
@@ -54,26 +50,14 @@ with open('data/samples.csv') as csv_file:
         sample[1] = age
         sample[2:] = landmarks
         # Append to result
-        if random.random() < 0.05 and len(test_samples) < 100:
-            test_samples.append(sample)
-            test_labels.append(label)
-        else:
-            training_samples.append(sample)
-            training_labels.append(label)
+        samples.append(sample)
+        labels.append(label)
         count = count + 1
 print('Finished reading', count, 'table entries')
-print('Training set size:', len(training_samples))
-print('Test set size:', len(test_samples))
 
 # Save as .npy files
-# Training set
-training_samples = np.stack(training_samples)
-np.save('data/training/samples.npy', training_samples)
-training_labels = np.array(training_labels, dtype=np.single)
-np.save('data/training/labels.npy', training_labels)
-# Test set
-test_samples = np.stack(test_samples)
-np.save('data/test/samples.npy', test_samples)
-test_labels = np.array(test_labels, dtype=np.single)
-np.save('data/test/labels.npy', test_labels)
+samples = np.stack(samples)
+np.save('data/samples.npy', samples)
+labels = np.array(labels, dtype=np.single)
+np.save('data/labels.npy', labels)
 print('Arrays saved')
