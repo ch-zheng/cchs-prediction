@@ -1,7 +1,7 @@
 import dlib
 
 # Window
-img_filename = 'pictures/cchs/white/6-8/779.jpg'
+img_filename = 'E:\\LURIE RESEARCH 08 04 21\\FINAL COHORT 8 17 21\\CCHS\\Caucasian\\2-3\\2087.jpg'
 img = dlib.load_rgb_image(img_filename)
 win = dlib.image_window(img, 'Landmarked Image')
 # Detection

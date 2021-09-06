@@ -39,7 +39,6 @@ with open(INPUT_FILE, "r") as csv_input, open(OUTPUT_FILE, "w", newline='') as c
                 calc_items = calc.split("-")
                 print("sub", x_y_pts[int(calc_items[0])], x_y_pts[int(calc_items[1])])
                 calc_x, calc_y = numpy.subtract(x_y_pts[int(calc_items[0])], x_y_pts[int(calc_items[1])])
-                print(calc_x, calc_y)
             elif '/' in calc: # divide
                 calc_items = calc.split("/")
                 print("divide ", calc_items)
