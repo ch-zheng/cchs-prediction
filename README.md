@@ -26,8 +26,8 @@ Default model parameters used, no hyperparameter tuning done.
     7. Support vector machine
     8. Naive bayes
 ### Utility
-* tabulate.py: Landmark photos & write to CSV file
-* encode.py: Serialize CSV entries as NumPy array files
+* tabulate.py: Landmark photos & write to CSV file.
+* encode.py: Serialize CSV entries as NumPy array files.
 * decode.py: Find CSV table entry based on the initial entries of an encoded row.
 ### Models
 * ridge.py: Ridge regression classifier
@@ -38,9 +38,22 @@ Default model parameters used, no hyperparameter tuning done.
 * gaussian.py: Gaussian process (_nonfunctional_)
 * naive-bayes.py: Naive Bayes classifier
 * mlp.py: Multilayer Perceptron
+### coefficients/
+* graph_coefficients.py: Display GUI weighting coefficients from regression models.
+### filter photos/, proportions/
+* filter_funny_faces.ipynb: rotate images upright, determine photos with dlib-undetectable faces
+* encode_modified.py: modified encode.py to work on cchs photos only
+* tabulate_modified.py: modified tabulate.py to work on cchs photos only
+* landmark_proportions.py: perform proportion manipulations from points in samples_final.csv
 
 ## Data Content
-Contains\
-    - CSV file with samples and labels\
-    - Master list of samples and labels in samples.npy and labels.npy\
-    - Test and training samples and labels in respective folders test/ and training/ labeled similarly
+### samples.npy, labels.npy, samples.csv
+* master samples, labels as well as test/ and training/ samples, labels read from samples.csv
+### coefficients/
+* coefficients.csv: coefficients corresponding to each regression model
+* gui points.csv: landmarks on face.png to use for GUI
+### filter photos/, proportions/
+* samples_final.csv: (to delete)
+* proportions_manipulations.xlsx: manipulate x, y points to determine "funny faces"
+* landmarked.txt: list of photos with faces detectable by dlib
+* unrecognized.txt: list of photos with faces undetectable by dlib
