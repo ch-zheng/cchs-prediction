@@ -14,67 +14,61 @@ from torch.utils.data import TensorDataset, DataLoader
 from sklearn.model_selection import train_test_split
 
 # Description: Train a multilayer perceptron neural net.
-training = True # Training or evaluation
-
-# Define model
-model = nn.Sequential(
-    nn.Linear(138, 100),
-    nn.ReLU(),
-    nn.Linear(100, 60),
-    nn.ReLU(),
-    nn.Linear(60, 1),
-    nn.Sigmoid(),
-)
-model.cuda()
-loss_func = nn.BCELoss()
-optimizer = optim.Adam(model.parameters(), lr=1e-4)
-epoch = 0
-
-# Load model
-model_path = Path('models/mlp.pt')
-if model_path.is_file():
-    print('Loading model')
-    checkpoint = torch.load(model_path)
-    model.load_state_dict(checkpoint['model'])
-    optimizer.load_state_dict(checkpoint['optimizer'])
-    epoch = checkpoint['epoch']
 
 # Load data
 X = torch.from_numpy(np.load('data/samples.npy'))
 y = torch.from_numpy(np.load('data/labels.npy'))
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20)
-if training:
-    samples = X_train
-    labels = y_test
-else:
-    samples = X_test
-    labels = y_test
-data = TensorDataset(samples.cuda(), labels.cuda())
-dataloader = DataLoader(
-    data,
-    batch_size=32,
-    shuffle=True
-)
 
-# Register exit callback
-def sigint_handler(sig_num, frame):
-    # Save model
-    print('\nSaving model')
-    torch.save({
-        'model': model.state_dict(),
-        'optimizer': optimizer.state_dict(),
-        'epoch': epoch
-    }, model_path)
-    sys.exit(0)
+# Create csv file
+OUTPUT_FILE = "data/accuracy_results.csv"
+with open(OUTPUT_FILE, "w", newline='') as csvfile:
+    csvWriter = csv.writer(csvfile)
+    header = ['trial', 'accuracy']
+    csvWriter.writerow(header)
+
+def load_data():
+    # Split data
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10)
+
+    # Create dataloaders
+    data_train = TensorDataset(X_train, y_train)
+    dataloader_train = DataLoader(
+        data_train,
+        batch_size=32,
+        shuffle=True
+    )
+    data_test = TensorDataset(X_test, y_test)
+    dataloader_test = DataLoader(
+        data_test,
+        batch_size=32,
+        shuffle=True
+    )
+
+    return dataloader_train, dataloader_test
+
+def create_model():
+    # Define model
+    model = nn.Sequential(
+        nn.Linear(138, 100),
+        nn.ReLU(),
+        nn.Linear(100, 60),
+        nn.ReLU(),
+        nn.Linear(60, 1),
+        nn.Sigmoid(),
+    )
+    model
+    loss_func = nn.BCELoss()
+    optimizer = optim.Adam(model.parameters(), lr=1e-4)
+
+    return model, loss_func, optimizer
 
 # Training loop
-def train():
-    global epoch
+def train(model, loss_func, optimizer, dataloader):
+    epoch = 0
     model.train()
-    signal.signal(signal.SIGINT, sigint_handler)
     last_print_time = time.time() # Limit console printing rate
     total_batches = math.floor(len(dataloader.dataset) / dataloader.batch_size)
-    while True:
+    while epoch <= 60000:
         for batch, (X, y) in enumerate(dataloader):
             prediction = model(X).squeeze() # Prediction
             loss = loss_func(prediction, y) # Compute loss
@@ -87,9 +81,11 @@ def train():
                 print(f'Epoch={epoch}, Batch={batch}/{total_batches}, Loss={loss.item()}', end='\r')
                 last_print_time = time.time()
         epoch += 1
+    
+    return model
 
 # Evaluation
-def evaluate():
+def evaluate(model, dataloader):
     model.eval()
     total = len(dataloader.dataset)
     correct = 0
@@ -103,10 +99,18 @@ def evaluate():
                     # Print initial 6 entries of offending sample
                     print(32 * batch + i, X[i][:6], y[i])
             correct += comparisons.sum().item()
-    print(f'Accuracy={correct/total}')
+    accuracy = correct/total
+    print(f'Accuracy for run {trial}={accuracy}')
+    with open(OUTPUT_FILE, "a", newline='') as csvfile:
+        csvWriter = csv.writer(csvfile)
+        csvWriter.writerow([trial, accuracy])
 
 # Run main loop
-if training:
-    train()
-else:
-    evaluate()
+k = 10 # 10-fold cross validation
+trial = 0
+while trial < k:
+    dataloader_train, dataloader_test = load_data()
+    model, loss_func, optimizer = create_model()
+    model = train(model, loss_func, optimizer, dataloader_train)
+    evaluate(model, dataloader_test)
+    trial += 1
