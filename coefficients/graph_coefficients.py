@@ -46,6 +46,13 @@ class ModelButton(Button):
         print(self.lbl)
         ax.scatter(x=marker_x, y=marker_y, c="r", s=self.coeffs)
 
+        # highlight largest and smallest points in blue
+        max_coeff = self.coeffs.index(max(self.coeffs))
+        min_coeff = self.coeffs.index(min(self.coeffs))
+        ax.scatter(x=[marker_x[max_coeff], marker_x[min_coeff]], y=[marker_y[max_coeff], marker_y[min_coeff]], c="b", s=[max(self.coeffs), min(self.coeffs)])
+        print("Largest: ", max(self.coeffs))
+        print("Smallest: ", min(self.coeffs))
+
 # load image, points
 img = image.imread('data/coefficients/face.png')
 markers_file = "data/coefficients/gui points.csv"
