@@ -51,44 +51,38 @@ Accuracy measured with 100-fold cross-validation.
 Default model parameters used, no hyperparameter tuning done.
 
 ## File Contents
-* statistical\_learning.ipynb
-	1. Decision tree
-	2. Logistic regression
-	3. LASSO regression
-	4. Polynomial regression
-    5. Ridge regression
-    6. K-nearest neighbors
-    7. Support vector machine
-    8. Naive bayes
 ### Utility
 * tabulate.py: Landmark photos & write to CSV file.
 * encode.py: Serialize CSV entries as NumPy array files.
 * decode.py: Find CSV table entry based on the initial entries of an encoded row.
 ### Models
-* ridge.py: Ridge regression classifier
-* log-reg.py: Logistic regression classifier
-* svm.py: Support Vector Machine
-* tree.py: Decision tree
-* k-neighbors.py: K-nearest neighbors
-* gaussian.py: Gaussian process (_nonfunctional_)
-* naive-bayes.py: Naive Bayes classifier
+* Ridge regression classifier
+* Logistic regression classifier
+* Support Vector Machine
+* Decision tree
+* K-nearest neighbors
+* Gaussian process (_nonfunctional_)
+* Naive Bayes classifier
 * mlp.py: Multilayer Perceptron
+### Evaluation
+* statistical\_learning.py: create aforemention models (with exception to MLP) and evaluate accuracy with 100-fold cross-validation.
+
 ### coefficients/
+* generate_coefficients.py: Generate coefficients from regression models to visually display.
 * graph_coefficients.py: Display GUI weighting coefficients from regression models.
-### filter photos/, proportions/
-* filter_funny_faces.ipynb: rotate images upright, determine photos with dlib-undetectable faces
-* encode_modified.py: modified encode.py to work on cchs photos only
-* tabulate_modified.py: modified tabulate.py to work on cchs photos only
-* landmark_proportions.py: perform proportion manipulations from points in samples_final.csv
+### filter photos/
+* filter_funny_faces.ipynb: rotate images upright, determine photos with dlib-undetectable faces.
+* landmark_proportions.py: perform proportion manipulations from points in samples_final.csv.
 
 ## Data Content
 ### samples.npy, labels.npy, samples.csv
-* master samples, labels as well as test/ and training/ samples, labels read from samples.csv
+* master samples, labels as well as test/ and training/ samples, labels read from samples.csv.
 ### coefficients/
-* coefficients.csv: coefficients corresponding to each regression model
-* gui points.csv: landmarks on face.png to use for GUI
-### filter photos/, proportions/
-* samples_final.csv: (to delete)
+* coefficients.csv: coefficients corresponding to each regression model.
+* gui points.csv: landmarks on face.png to use for GUI.
+* face.png: sample photo to use for GUI.
+### filter photos/
+* proportions.csv: generated csv file of desired proportions described in filter photos/landmark_proportions.py
 * proportions_manipulations.xlsx: manipulate x, y points to determine "funny faces"
 * landmarked.txt: list of photos with faces detectable by dlib
 * unrecognized.txt: list of photos with faces undetectable by dlib
