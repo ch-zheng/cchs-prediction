@@ -2,28 +2,51 @@
 Predict whether an individual has CCHS based on frontal facial landmarks.
 
 ## Performance
-### First trial
-| Model | Accuracy |
-| --- | --- |
-| Multilayer Perceptron | 90.00% |
-| Ridge regression | 81.94% |
-| Logistic regression | 78.00% |
-| K-nearest neighbors | 71.52% |
-| Decision tree | 70.04% |
-| Support Vector Machine | 68.68% |
-| Naive Bayes | 53.77% |
-
-## Second trial
-| Model | Accuracy |
-| --- | --- |
-| Multilayer Perceptron | 92.00% |
-| Ridge regression | ---% |
-| Logistic regression | ---% |
-| K-nearest neighbors | ---% |
-| Decision tree | ---% |
-| Support Vector Machine | ---% |
-| Naive Bayes | ---% |
-
+<table>
+    <tr>
+        <th rowspan = 2>Model</th>
+        <th colspan=2>Accuracy</th>
+    </tr>
+    <tr>
+        <th>First Trial</th>
+        <th>Second Trial</th>
+    </tr>
+    <tr>
+        <td>Multilayer Perceptron</td>
+        <td>90.00%</td>
+        <td>92.00%</td>
+    </tr>
+    <tr>
+        <td>Ridge regression</td>
+        <td>81.94%</td>
+        <td>82.73%</td>
+    </tr>
+    <tr>
+        <td>Logistic regression</td>
+        <td>78.05%</td>
+        <td>79.29%</td>
+    </tr>
+    <tr>
+        <td>K-nearest neighbors</td>
+        <td>71.52%</td>
+        <td>70.38%</td>
+    </tr>
+    <tr>
+        <td>Decision tree</td>
+        <td>70.45%</td>
+        <td>71.84%</td>
+    </tr>
+    <tr>
+        <td>Support Vector Machine</td>
+        <td>68.68%</td>
+        <td>73.38%</td>
+    </tr>
+    <tr>
+        <td>Naive Bayes</td>
+        <td>53.77%</td>
+        <td>53.64%</td>
+    </tr>
+</table>
 Accuracy measured with 100-fold cross-validation.
 Default model parameters used, no hyperparameter tuning done.
 
