@@ -47,8 +47,8 @@ class ModelButton(Button):
         ax.scatter(x=marker_x, y=marker_y, c="r", s=self.coeffs)
 
 # load image, points
-img = image.imread('face.png')
-markers_file = "gui points.csv"
+img = image.imread('data/coefficients/face.png')
+markers_file = "data/coefficients/gui points.csv"
 
 # points array
 marker_x = []
@@ -63,7 +63,7 @@ with open(markers_file, "r") as csvfile:
         marker_y.append(int(points[i+1]))    
 
 # load coefficients
-coefficients_file = "coefficients.csv"
+coefficients_file = "data/coefficients/coefficients.csv"
 models = {}
 
 with open(coefficients_file, "r") as csvfile:
