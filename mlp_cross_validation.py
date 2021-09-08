@@ -21,7 +21,7 @@ y = torch.from_numpy(np.load('data/labels.npy'))
 
 # Create csv file
 OUTPUT_FILE = "data/accuracy_results.csv"
-with open(OUTPUT_FILE, "w", newline='') as csvfile:
+with open(OUTPUT_FILE, "a", newline='') as csvfile:
     csvWriter = csv.writer(csvfile)
     header = ['trial', 'accuracy']
     csvWriter.writerow(header)
