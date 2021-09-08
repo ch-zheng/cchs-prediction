@@ -9,21 +9,19 @@ import numpy as np
 
 # Target format: (race, age, landmarks...)
 targets = (
-    (-1, 0, 0, 0.3122),
-    (0, 2, 0, 0.1364),
-    (-1, 3, 0, 0.2260),
-    (0, 3, 0, 0.2338),
-    (-1, 1, 0, 0.2014),
-    (-1, 1, 0, 0.1178),
-    (-1, 0, 0, 0.3651),
-    (-1, 1, 0, 0.1629),
-    (-1, 1, 0, 0.2695),
-    (-1, 0, 0, 0.2051)
+    (-1, 7, 0, 2.6296e-01),
+    (-1, 0, 0, 0.1130),
+    (-1, 1, 0, 0.3194),
+    (-1, 4, 0, 0.2147),
+    (1, 0, 0, 0.2457),
+    (-1, 1, 0, 0.1913),
+    (0, 1, 0, 0.1226),
+    (-1, 1, 0.0226, 0.0904)
 )
 
 # Encodings
-label_encoding = {'control': 0, 'cchs': 1}
-race_encoding = {'other': 0, 'unknown': 0, 'black': 1, 'white': -1}
+label_encoding = {'CONTROL': 0, 'CCHS': 1}
+race_encoding = {'Other': 0, 'UNKNOWN': 0, 'African American': 1, 'Caucasian': -1}
 age_encoding = {
     '0-1': 0,
     '2-3': 1,
