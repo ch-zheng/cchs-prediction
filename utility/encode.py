@@ -69,7 +69,7 @@ print('Finished reading', count, 'table entries')
 
 # Save as .npy files
 samples = np.stack(samples)
-np.save('data/samples_phase1.npy', samples)
+np.save('data/phase1/samples_phase1.npy', samples)
 labels = np.array(labels, dtype=np.single)
-np.save('data/labels_phase1.npy', labels)
+np.save('data/phase1/labels_phase1.npy', labels)
 print('Arrays saved')

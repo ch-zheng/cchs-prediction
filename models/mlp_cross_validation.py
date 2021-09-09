@@ -16,8 +16,9 @@ from sklearn.model_selection import train_test_split
 # Description: Train a multilayer perceptron neural net.
 
 # Load data
-X = torch.from_numpy(np.load('data/samples.npy'))
-y = torch.from_numpy(np.load('data/labels.npy'))
+X = torch.from_numpy(np.load('data/phase1/samples.npy'))
+y = torch.from_numpy(np.load('data/phase1/labels.npy'))
+num_omitted_landmarks = 9
 
 # Create csv file
 OUTPUT_FILE = "data/accuracy_results.csv"
@@ -49,11 +50,11 @@ def load_data():
 def create_model():
     # Define model
     model = nn.Sequential(
-        nn.Linear(138, 100),
+        nn.Linear(138-num_omitted_landmarks*2, 100-num_omitted_landmarks*2),
         nn.ReLU(),
-        nn.Linear(100, 60),
+        nn.Linear(100-num_omitted_landmarks*2, 60-num_omitted_landmarks*2),
         nn.ReLU(),
-        nn.Linear(60, 1),
+        nn.Linear(60-num_omitted_landmarks*2, 1),
         nn.Sigmoid(),
     )
     model

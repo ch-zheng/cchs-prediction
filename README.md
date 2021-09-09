@@ -114,5 +114,5 @@ Phase 1 removed landmarks 1, 3, 5, 11, 13, 15, 18, 25, 28, reducing our landmark
 * labels.npy: Encoded labels from samples.csv sans modification.
 
 ### phase1/
-* samples_phase1.npy: Encoded samples from samples.csv, omitting undesired landmarks indicated for phase 1.
-* labels_phase1.npy: Encoded labels from samples.csv, omitting undesired landmarks indicated for phase 1.
+* samples.npy: Encoded samples from samples.csv, omitting undesired landmarks indicated for phase 1.
+* labels.npy: Encoded labels from samples.csv, omitting undesired landmarks indicated for phase 1.
