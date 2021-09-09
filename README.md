@@ -25,42 +25,42 @@ Predict whether an individual has CCHS based on frontal facial landmarks.
         <td>81.94%</td>
         <td>82.73%</td>
         <td>88.16%</td>
-        <td>---%</td>
+        <td>87.20%</td>
     </tr>
     <tr>
         <td>Logistic regression</td>
         <td>78.05%</td>
         <td>79.29%</td>
         <td>88.33%</td>
-        <td>---%</td>
+        <td>87.82%</td>
     </tr>
     <tr>
         <td>K-nearest neighbors</td>
         <td>71.52%</td>
         <td>70.38%</td>
         <td>75.96%</td>
-        <td>---%</td>
+        <td>75.95%</td>
     </tr>
     <tr>
         <td>Decision tree</td>
         <td>70.45%</td>
         <td>71.84%</td>
         <td>77.43%</td>
-        <td>---%</td>
+        <td>76.12%</td>
     </tr>
     <tr>
         <td>Support Vector Machine</td>
         <td>68.68%</td>
         <td>73.38%</td>
         <td>88.00%</td>
-        <td>---%</td>
+        <td>87.12%</td>
     </tr>
     <tr>
         <td>Naive Bayes</td>
         <td>53.77%</td>
         <td>53.64%</td>
         <td>73.38%</td>
-        <td>---%</td>
+        <td>73.38%</td>
     </tr>
 </table>
 Accuracy measured with 100-fold cross-validation.<br>
