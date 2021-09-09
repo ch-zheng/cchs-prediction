@@ -63,43 +63,56 @@ Predict whether an individual has CCHS based on frontal facial landmarks.
         <td>---%</td>
     </tr>
 </table>
-Accuracy measured with 100-fold cross-validation.
-Default model parameters used, no hyperparameter tuning done.
+Accuracy measured with 100-fold cross-validation.<br>
+Default model parameters used, no hyperparameter tuning done.<br>
 Phase 1 removed landmarks 1, 3, 5, 11, 13, 15, 18, 25, 28, reducing our landmark total from 68 to 59 points.
 
-## File Contents
-### Utility
+## Code Contents
+### utility/
 * tabulate.py: Landmark photos & write to CSV file.
 * encode.py: Serialize CSV entries as NumPy array files.
 * decode.py: Find CSV table entry based on the initial entries of an encoded row.
-### Models
-* Ridge regression classifier
-* Logistic regression classifier
-* Support Vector Machine
-* Decision tree
-* K-nearest neighbors
-* Gaussian process (_nonfunctional_)
-* Naive Bayes classifier
-* mlp.py: Multilayer Perceptron
-### Evaluation
-* statistical\_learning.py: create aforemention models (with exception to MLP) and evaluate accuracy with 100-fold cross-validation.
+### models/
+* statistical_learning.py: Create optimized models, evaluate accuracy with 100-fold cross-validation.
+  * Ridge regression classifier
+  * Logistic regression classifier
+  * Support vector machine
+  * Decision tree
+  * K-nearest neighbors
+  * Naive Bayes classifier
+* mlp.py: Implement Multilayer Perceptron model.
+* mlp_cross_validation.py: Implement MLP with 10-fold cross-validation and 60,000 epochs for each evaluation.
 
 ### coefficients/
 * generate_coefficients.py: Generate coefficients from regression models to visually display.
 * graph_coefficients.py: Display GUI weighting coefficients from regression models.
-### filter photos/
-* filter_funny_faces.ipynb: rotate images upright, determine photos with dlib-undetectable faces.
-* landmark_proportions.py: perform proportion manipulations from points in samples_final.csv.
 
-## Data Content
-### samples.npy, labels.npy, samples.csv
-* master samples, labels as well as test/ and training/ samples, labels read from samples.csv.
-### coefficients/
-* coefficients.csv: coefficients corresponding to each regression model.
-* gui points.csv: landmarks on face.png to use for GUI.
-* face.png: sample photo to use for GUI.
 ### filter photos/
-* proportions.csv: generated csv file of desired proportions described in filter photos/landmark_proportions.py
-* proportions_manipulations.xlsx: manipulate x, y points to determine "funny faces"
-* landmarked.txt: list of photos with faces detectable by dlib
-* unrecognized.txt: list of photos with faces undetectable by dlib
+* filter_funny_faces.ipynb: Rotate images upright, determine photos with dlib-undetectable faces.
+* landmark_proportions.py: Perform proportion manipulations from points in samples_final.csv.
+
+## Data Contents
+* samples.csv: Contains all CCHS and control subject race, age group, and landmark labels.
+
+### coefficients/
+* coefficients.csv: Coefficients corresponding to each regression model.
+* gui points.csv: Landmarks on face.png to use for GUI.
+* face.png: Sample photo to use for GUI.
+
+### filter photos/
+* proportions.csv: Generated csv file of desired proportions described in filter photos/landmark_proportions.py
+* proportions_manipulations.xlsx: Manipulate x, y points to determine "funny faces"
+* landmarked.txt: List of photos with faces detectable by dlib
+* unrecognized.txt: List of photos with faces undetectable by dlib
+
+### grid-search/
+* best_hyperparameters.txt: List of best hyperparameters for models in statistical_learning.py based on grid-search results on original dataset.
+* grid_search_results.csv: List results of hyperparameter grid search on statistical learning models as more hyperparameters are evaluated with 100-fold cross-validation.
+
+### original dataset/
+* samples.npy: Encoded samples from samples.csv sans modification.
+* labels.npy: Encoded labels from samples.csv sans modification.
+
+### phase1/
+* samples_phase1.npy: Encoded samples from samples.csv, omitting undesired landmarks indicated for phase 1.
+* labels_phase1.npy: Encoded labels from samples.csv, omitting undesired landmarks indicated for phase 1.
