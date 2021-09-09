@@ -12,6 +12,9 @@ labels = []
 # Encodings
 label_encoding = {'control': 0, 'cchs': 1}
 race_encoding = {'other': 0, 'unknown': 0, 'black': 1, 'white': -1}
+# Angeli's encodings
+# label_encoding = {'CONTROL': 0, 'CCHS': 1}
+# race_encoding = {'Other': 0, 'UNKNOWN': 0, 'African American': 1, 'Caucasian': -1}
 age_encoding = {
     '0-1': 0,
     '2-3': 1,
@@ -24,6 +27,9 @@ age_encoding = {
     '26-35': 8
 }
 
+original_pts = list(range(0, 68))
+omitted_pts = [1, 3, 5, 11, 13, 15, 18, 25, 28]
+
 # Read CSV file
 print('Opening CSV file')
 with open('data/samples.csv') as csv_file:
@@ -35,7 +41,13 @@ with open('data/samples.csv') as csv_file:
         label = label_encoding[row[1]]
         race = race_encoding[row[2]]
         age = age_encoding[row[3]]
-        landmarks = np.array(tuple(map(int, row[4:])), dtype=np.single)
+        landmarks = []
+        for i in original_pts:
+            if i in omitted_pts: # don't include omitted points!
+                continue
+            landmarks.append(row[4+2*i]) # x
+            landmarks.append(row[5+2*i]) # y
+        landmarks = np.array(tuple(map(int, landmarks)), dtype=np.single)
         # Standardize landmarks to [0, 1]
         landmarks_x = landmarks[::2]
         landmarks_x = landmarks_x - landmarks_x.min()
@@ -57,7 +69,7 @@ print('Finished reading', count, 'table entries')
 
 # Save as .npy files
 samples = np.stack(samples)
-np.save('data/samples.npy', samples)
+np.save('data/samples_phase1.npy', samples)
 labels = np.array(labels, dtype=np.single)
-np.save('data/labels.npy', labels)
+np.save('data/labels_phase1.npy', labels)
 print('Arrays saved')
