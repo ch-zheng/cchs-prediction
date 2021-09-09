@@ -28,7 +28,7 @@ with open(OUTPUT_FILE, "a", newline='') as csvfile:
 
 def load_data():
     # Split data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, stratify=y)
 
     # Create dataloaders
     data_train = TensorDataset(X_train, y_train)
