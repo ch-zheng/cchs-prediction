@@ -14,8 +14,8 @@ from sklearn.model_selection import cross_val_score
 from pathlib import Path
 
 ## Load data
-X = np.load('data/samples.npy')
-y = np.load('data/labels.npy')
+X = np.load('data/phase1/samples.npy')
+y = np.load('data/phase1/labels.npy')
 
 ## Initialize models
 tree = DecisionTreeClassifier(criterion='entropy', max_depth=4, max_features=55, max_leaf_nodes=28, min_impurity_decrease=0, min_samples_leaf=2)
@@ -38,10 +38,9 @@ models = {
 ## Evaluate models
 # average accuracy
 avg_accuracy = {}
-avg_accuracy["Multilayer Perceptron"] = 0.920 # mlp.py
 
 for name, m in models.items():
-  scores = cross_val_score(m, X, y, cv=100, n_jobs=-1) # 100-fold cross-validation
+  scores = cross_val_score(m, X, y, cv=10, n_jobs=-1) # 100-fold cross-validation
   avg_accuracy[name] = sum(scores) / len(scores)
 
 # display avg_accuracy
