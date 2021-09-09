@@ -1,4 +1,3 @@
 pictures/**
 !pictures/
-models/**
-!models/
+*.dat
