@@ -1,4 +1,5 @@
 import dlib
+import time
 
 # Window
 img_filename = 'E:\\LURIE RESEARCH 08 04 21\\FINAL COHORT 8 17 21\\CCHS\\Caucasian\\2-3\\2087.jpg'
@@ -14,5 +15,5 @@ for face in faces:
     landmarks = predictor(img, face)
     for part in landmarks.parts():
         win.add_overlay_circle(part, 2)
-        #time.sleep(0.2)
+        time.sleep(0.5)
 win.wait_until_closed()

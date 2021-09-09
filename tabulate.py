@@ -17,7 +17,7 @@ SHAPE_PREDICTOR_MODEL = 'models/shape_predictor_68_face_landmarks.dat'
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor(SHAPE_PREDICTOR_MODEL)
 
-with open(RESULT_FILE, 'w') as result_file:
+with open(RESULT_FILE, 'w', newline='') as result_file:
     result_writer = csv.writer(result_file)
     # Header row
     header_row = ['filename', 'group', 'race', 'age']
