@@ -18,7 +18,7 @@ Predict whether an individual has CCHS based on frontal facial landmarks.
         <td>90.00%</td>
         <td>92.00%</td>
         <td>---%</td>
-        <td>---%</td>
+        <td>87.90%</td>
     </tr>
     <tr>
         <td>Ridge regression</td>
