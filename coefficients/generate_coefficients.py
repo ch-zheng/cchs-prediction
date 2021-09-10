@@ -14,8 +14,8 @@ import csv
 import numpy as np
 
 OUTPUT = "data/coefficients/coefficients.csv"
-X = np.load('data/samples.npy')
-y = np.load('data/labels.npy')
+X = np.load('data/original dataset/samples.npy')
+y = np.load('data/original dataset/labels.npy')
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 
 ## Initialize models
