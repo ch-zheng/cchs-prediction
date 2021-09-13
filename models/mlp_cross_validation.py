@@ -18,10 +18,10 @@ from sklearn.model_selection import train_test_split
 # Load data
 X = torch.from_numpy(np.load('data/phase1/samples.npy'))
 y = torch.from_numpy(np.load('data/phase1/labels.npy'))
-num_omitted_landmarks = 9
+num_omitted = 9
 
 # Create csv file
-OUTPUT_FILE = "data/accuracy_results.csv"
+OUTPUT_FILE = "data/accuracy_results_phase1.csv"
 with open(OUTPUT_FILE, "a", newline='') as csvfile:
     csvWriter = csv.writer(csvfile)
     header = ['trial', 'accuracy']
@@ -50,11 +50,11 @@ def load_data():
 def create_model():
     # Define model
     model = nn.Sequential(
-        nn.Linear(138-num_omitted_landmarks*2, 100-num_omitted_landmarks*2),
+        nn.Linear(138-num_omitted*2, 100-num_omitted*2), #25
         nn.ReLU(),
-        nn.Linear(100-num_omitted_landmarks*2, 60-num_omitted_landmarks*2),
+        nn.Linear(100-num_omitted*2, 60-num_omitted*2),
         nn.ReLU(),
-        nn.Linear(60-num_omitted_landmarks*2, 1),
+        nn.Linear(60-num_omitted*2, 1),
         nn.Sigmoid(),
     )
     model
