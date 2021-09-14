@@ -1,6 +1,5 @@
 # Native
 import csv
-import random
 # External
 import numpy as np
 
