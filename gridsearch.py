@@ -4,15 +4,15 @@ from svm import SVM
 from neighbors import Neighbors
 from bayes import NaiveBayes
 from tree import DecisionTree
-from utils import oversample
+import utils
 from pathlib import Path
 import json
 import numpy as np
 
 # Load data
-samples = np.load('data/original/samples.npy')
-labels = np.load('data/original/labels.npy')
-X, y = oversample(samples, labels)
+samples = np.load('data/original dataset/samples.npy')
+labels = np.load('data/original dataset/labels.npy')
+X, y = utils.augment(samples, labels)
 
 # Model list
 models = {
@@ -28,10 +28,6 @@ for name, model in models.items():
     # Hyperparameter search
     parameters = model.grid_search(X, y)
     print(name.capitalize(), 'parameters:', parameters)
-    # Evaluation
-    model.load_hyperparams(parameters)
-    score = model.cross_validate(X, y)
-    print(name.capitalize(), 'score:', score)
     # Save hyperparameters
     with open(Path('hyperparameters', name + '.json'), 'w') as f:
         json.dump(parameters, f)

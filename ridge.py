@@ -6,7 +6,7 @@ from sklearn.linear_model import RidgeClassifier
 
 class Ridge(SKModel):
     def __init__(self):
-        self.model = RidgeClassifier(solver='saga')
+        self.model = RidgeClassifier(class_weight='balanced', solver='saga')
     def grid_search(self, X, y) -> dict:
         parameters = {
             'alpha': np.logspace(-8, 8, num=17, base=2)

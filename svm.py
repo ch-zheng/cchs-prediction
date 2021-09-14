@@ -6,7 +6,7 @@ from sklearn.svm import LinearSVC
 
 class SVM(SKModel):
     def __init__(self):
-        self.model = LinearSVC(dual=False, max_iter=10000)
+        self.model = LinearSVC(dual=False, class_weight='balanced', max_iter=10000)
     def grid_search(self, X, y) -> dict:
         parameters = {
             'C': np.logspace(0, 9, num=10, base=2)

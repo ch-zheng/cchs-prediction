@@ -6,7 +6,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 class DecisionTree(SKModel):
     def __init__(self):
-        self.model = DecisionTreeClassifier()
+        self.model = DecisionTreeClassifier(class_weight='balanced')
     def grid_search(self, X, y) -> dict:
         parameters = {
             'criterion': ('gini', 'entropy'),

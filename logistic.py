@@ -6,7 +6,12 @@ from sklearn.linear_model import LogisticRegression
 
 class Logistic(SKModel):
     def __init__(self):
-        self.model = LogisticRegression(solver='saga', max_iter=10000, n_jobs=-1, multi_class='ovr')
+        self.model = LogisticRegression(
+            class_weight='balanced',
+            solver='saga',
+            max_iter=10000,
+            n_jobs=-1,
+            multi_class='ovr')
     def grid_search(self, X, y) -> dict:
         parameters = {
             'C': np.logspace(-8, 8, num=17, base=2)
