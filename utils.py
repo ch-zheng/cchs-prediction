@@ -43,7 +43,8 @@ def augment(samples: np.ndarray, labels: np.ndarray) -> Tuple[np.ndarray, np.nda
 # Note: How to remove 'subject' column from samples array
 # np.delete(samples, 0, 1)
 
-def split(k: int, samples: np.ndarray, labels: np.ndarray) -> List[Tuple[np.ndarray, np.ndarray]]:
+# Create splits in the format expected by sklearn cross-validation
+def split(k: int, samples: np.ndarray, labels: np.ndarray) -> List[Tuple[List[int], List[int]]]:
     # Count duplicates of each CCHS subject
     pos_subjects = set() # CCHS
     neg_subjects = set() # Control
@@ -62,39 +63,37 @@ def split(k: int, samples: np.ndarray, labels: np.ndarray) -> List[Tuple[np.ndar
         else:
             subject_counts[subject] = 1
 
-    # Partition subjects into splits
-    splits = []
-    split_sizes = []
+    # Partition subjects into buckets
+    buckets = []
+    bucket_sizes = []
     for _ in range(k):
-        splits.append(set())
-        split_sizes.append(0)
-    for subjects in (pos_subjects, neg_subjects):
-        while len(subjects) > 0:
-            # Find smallest split
-            smallest_split = 0
-            for i in range(len(splits)):
-                if split_sizes[i] == min(split_sizes):
-                    smallest_split = i
+        buckets.append(set())
+        bucket_sizes.append(0)
+    for subjects in map(
+        lambda x: sorted(x, key=lambda y: subject_counts[y], reverse=True),
+        (pos_subjects, neg_subjects)):
+        for s in subjects:
+            # Find smallest bucket
+            smallest_bucket = 0 # Index into buckets
+            min_size = min(bucket_sizes)
+            for i in range(k):
+                if bucket_sizes[i] == min_size:
+                    smallest_bucket = i
                     break
-            # Insert subject into smallest split
-            s = subjects.pop()
-            splits[smallest_split].add(s)
-            split_sizes[smallest_split] += subject_counts[s]
-
-    # Assemble resulting arrays
-    result = []
-    for i in range(k):
-        size = split_sizes[i]
-        a = np.empty((size, samples.shape[1]), dtype=samples.dtype)
-        b = np.empty(size, dtype=labels.dtype)
-        count = 0
-        split = splits[i]
-        for j in range(len(samples)):
-            if samples[j][0] in split:
-                a[count] = samples[j]
-                b[count] = labels[j]
-                count += 1
-        if count < size:
-            raise Exception('Miscount') # Debugging test
-        result.append((a, b))
-    return result
+            # Insert subject into smallest bucket
+            buckets[smallest_bucket].add(s)
+            bucket_sizes[smallest_bucket] += subject_counts[s]
+    
+    # Assemble splits
+    splits = []
+    for bucket in buckets:
+        training = []
+        test = []
+        for i in range(len(samples)):
+            subject = samples[i][0]
+            if subject in bucket:
+                test.append(i)
+            else:
+                training.append(i)
+        splits.append((training, test))
+    return splits

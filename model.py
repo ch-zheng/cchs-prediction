@@ -18,9 +18,6 @@ class Model(ABC):
     @abstractmethod
     def score(self, X, y) -> float:
         pass
-    @abstractmethod
-    def cross_validate(self, X, y, k: int = 10) -> Tuple[float, float]:
-        pass
     # Disk ops
     @abstractmethod
     def save(self, file: os.PathLike):
@@ -31,17 +28,21 @@ class Model(ABC):
 
 # Scikit model
 class SKModel(Model):
+    def __init__(self):
+        self.test_params = {}
     def fit(self, X, y):
         self.model.fit(X, y)
     def predict(self, X):
         return self.model.predict(X)
     def score(self, X, y) -> float:
         return self.model.score(X, y)
-    def cross_validate(self, X, y, k: int = 10) -> Tuple[float, float]:
-        scores = cross_val_score(self.model, X, y, cv=k, n_jobs=-1)
+    def cross_validate(self, X, y, cv=10) -> Tuple[float, float]:
+        scores = cross_val_score(self.model, X, y, scoring='recall', cv=cv, n_jobs=-1)
         return statistics.mean(scores), statistics.stdev(scores)
-    def grid_search(self, params: dict, X, y) -> dict:
-        searcher = GridSearchCV(self.model, params, n_jobs=-1, refit=False, cv=10)
+    def grid_search(self, X, y, cv=10, params=None) -> dict:
+        if params is None:
+            params = self.test_params
+        searcher = GridSearchCV(self.model, params, scoring='recall', n_jobs=-1, refit=False, cv=cv)
         searcher.fit(X, y)
         return searcher.best_params_
     def load_hyperparams(self, params: dict):

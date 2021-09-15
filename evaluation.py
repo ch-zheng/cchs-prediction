@@ -8,7 +8,7 @@ import numpy as np
 samples = np.load('data/individualized/samples.npy')
 labels = np.load('data/individualized/labels.npy')
 X, y = utils.augment(samples, labels)
-splits = utils.split(10, X, y)
+splits = utils.split(20, X, y)
 
 # Model list
 models = {
@@ -20,10 +20,12 @@ models = {
     'tree': zoo.DecisionTree()
 }
 
+print('Model, recall(mean, stdev)')
 for name, model in models.items():
-    # Hyperparameter search
-    parameters = model.grid_search(X, y, cv=splits)
-    print(name.capitalize(), 'parameters:', parameters)
-    # Save hyperparameters
-    with open(Path('hyperparameters', name + '.json'), 'w') as f:
-        json.dump(parameters, f)
+    # Load hyperparameters
+    with open(Path('hyperparameters', name + '.json')) as f:
+        parameters = json.load(f)
+    model.load_hyperparams(parameters)
+    # Evaluation
+    scores = model.cross_validate(X, y, splits)
+    print(name, scores)
