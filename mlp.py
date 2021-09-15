@@ -37,7 +37,7 @@ class MLP(Model):
         )
         # Training loop
         self.model.train()
-        for _ in range(1):
+        for _ in range(50000):
             for X, y in dataloader:
                 prediction = self.model(X).squeeze() # Prediction
                 loss = self.loss_func(prediction, y) # Compute loss

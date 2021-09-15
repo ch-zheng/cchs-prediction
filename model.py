@@ -36,13 +36,21 @@ class SKModel(Model):
         return self.model.predict(X)
     def score(self, X, y) -> float:
         return self.model.score(X, y)
-    def cross_validate(self, X, y, cv=10) -> Tuple[float, float]:
-        scores = cross_val_score(self.model, X, y, scoring='recall', cv=cv, n_jobs=-1)
-        return statistics.mean(scores), statistics.stdev(scores)
+    def cross_validate(self, X, y, cv=10) -> dict:
+        scores = {
+            'recall': (0, 0),
+            'precision': (0, 0),
+            'accuracy': (0, 0),
+            'balanced_accuracy': (0, 0),
+        }
+        for k in scores.keys():
+            s = cross_val_score(self.model, X, y, scoring=k, cv=cv, n_jobs=-1)
+            scores[k] = statistics.mean(s), statistics.stdev(s)
+        return scores
     def grid_search(self, X, y, cv=10, params=None) -> dict:
         if params is None:
             params = self.test_params
-        searcher = GridSearchCV(self.model, params, scoring='recall', n_jobs=-1, refit=False, cv=cv)
+        searcher = GridSearchCV(self.model, params, scoring='balanced_accuracy', n_jobs=-1, refit=False, cv=cv)
         searcher.fit(X, y)
         return searcher.best_params_
     def load_hyperparams(self, params: dict):
