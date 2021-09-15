@@ -44,6 +44,7 @@ def augment(samples: np.ndarray, labels: np.ndarray) -> Tuple[np.ndarray, np.nda
 # np.delete(samples, 0, 1)
 
 # Create splits in the format expected by sklearn cross-validation
+# Assumed row format: (subject, ...)
 def split(k: int, samples: np.ndarray, labels: np.ndarray) -> List[Tuple[List[int], List[int]]]:
     # Count duplicates of each CCHS subject
     pos_subjects = set() # CCHS
@@ -83,7 +84,7 @@ def split(k: int, samples: np.ndarray, labels: np.ndarray) -> List[Tuple[List[in
             # Insert subject into smallest bucket
             buckets[smallest_bucket].add(s)
             bucket_sizes[smallest_bucket] += subject_counts[s]
-    
+
     # Assemble splits
     splits = []
     for bucket in buckets:
@@ -97,3 +98,23 @@ def split(k: int, samples: np.ndarray, labels: np.ndarray) -> List[Tuple[List[in
                 training.append(i)
         splits.append((training, test))
     return splits
+
+# Create array splits from indices
+def create_splits(X: np.ndarray, y: np.ndarray, splits: List[Tuple[List[int], List[int]]]) -> List[Tuple[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]]:
+    result = []
+    for split in splits:
+        data_sets = [] # [Training, Test]
+        for i in range(2):
+            set_size = len(split[i])
+            data_set = (
+                np.empty((set_size, X.shape[1]), dtype=X.dtype),
+                np.empty(set_size, dtype=y.dtype)
+            )
+            idx = 0
+            for row_idx in split[i]:
+                data_set[0][idx] = X[row_idx]
+                data_set[1][idx] = y[row_idx]
+                idx += 1
+            data_sets.append(data_set)
+        result.append(tuple(data_sets))
+    return result

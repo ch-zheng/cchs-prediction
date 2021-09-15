@@ -9,6 +9,7 @@ samples = np.load('data/individualized/samples.npy')
 labels = np.load('data/individualized/labels.npy')
 X, y = utils.augment(samples, labels)
 splits = utils.split(10, X, y)
+X = np.delete(X, 0, 1)
 
 # Model list
 models = {
