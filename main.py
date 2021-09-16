@@ -1,29 +1,47 @@
-from sys import exit
-from utils import oversample
+# Local
+import utils
+import zoo
+# Native
+from pathlib import Path
+import json
+# External
 import numpy as np
 
 # Load data
-samples = np.array([[1, 1, 1], [2, 2, 2], [3, 3, 3], [4, 4, 4]])
-labels = np.array([0, 1, 0, 0])
-print('Samples', samples)
-print('Labels', labels)
-a, b = oversample(samples, labels)
-print('a', a)
-print('b', b)
-exit(0)
+X = np.load('data/individualized/samples.npy')
+y = np.load('data/individualized/labels.npy')
+X, y = utils.augment(X, y)
+splits = utils.split(10, X, y)
+X = np.delete(X, 0, 1)
 
-add_count = 2*int(sum(labels)) # Additional row count
-uber_samples = np.empty((add_count, samples.shape[1]))
-uber_labels = np.empty(add_count)
-k = 0
-for i in range(len(samples)):
-    if labels[i] == 1:
-        uber_samples[k] = samples[i] 
-        uber_labels[k] = labels[i]
-        uber_samples[k+1] = samples[i]
-        uber_labels[k+1] = labels[i]
-        k += 2
-uber_samples = np.row_stack((samples, uber_samples))
-uber_labels = np.row_stack((labels, uber_labels))
-print(uber_samples)
-print(uber_labels)
+# Model list
+models = {
+    'ridge': zoo.Ridge(),
+    'logistic': zoo.Logistic(),
+    'svm': zoo.SVM(),
+    'neighbors': zoo.Neighbors(),
+    'bayes': zoo.NaiveBayes(),
+    'tree': zoo.DecisionTree()
+}
+
+def grid_search():
+    for name, model in models.items():
+        # Hyperparameter search
+        parameters = model.grid_search(X, y, cv=splits)
+        print(name, 'parameters:', parameters)
+        # Save hyperparameters
+        with open(Path('hyperparameters', name + '.json'), 'w') as f:
+            json.dump(parameters, f)
+
+def evaluate():
+    for name, model in models.items():
+        # Load hyperparameters
+        with open(Path('hyperparameters', name + '.json')) as f:
+            parameters = json.load(f)
+        model.load_hyperparams(parameters)
+        # Evaluation
+        scores = model.cross_validate(X, y, splits)
+        print(name, scores)
+
+grid_search()
+evaluate()

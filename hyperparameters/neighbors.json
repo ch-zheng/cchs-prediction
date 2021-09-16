@@ -1,1 +1,1 @@
-{"n_neighbors": 5, "p": 1, "weights": "distance"}
+{"n_neighbors": 5, "p": 1, "weights": "uniform"}

@@ -5,9 +5,9 @@ import json
 import numpy as np
 
 # Load data
-samples = np.load('data/individualized/samples.npy')
-labels = np.load('data/individualized/labels.npy')
-X, y = utils.augment(samples, labels)
+X = np.load('data/individualized/samples.npy')
+y = np.load('data/individualized/labels.npy')
+X, y = utils.augment(X, y)
 splits = utils.split(10, X, y)
 X = np.delete(X, 0, 1)
 

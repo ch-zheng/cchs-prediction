@@ -6,34 +6,34 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
 
-# Description: Gaussian Naive Bayes classifier
-
 # ML model class zoo
 
 class Ridge(SKModel):
     def __init__(self):
-        self.model = RidgeClassifier(class_weight='balanced', solver='saga')
+        self.model = RidgeClassifier(solver='saga')
         self.test_params = {
-            'alpha': np.logspace(-8, 8, num=17, base=2)
+            'alpha': np.logspace(-8, 8, num=17, base=2),
+            'class_weight': (None, 'balanced')
         }
 
 class Logistic(SKModel):
     def __init__(self):
         self.model = LogisticRegression(
-            class_weight='balanced',
             solver='saga',
             max_iter=10000,
             n_jobs=-1,
             multi_class='ovr')
         self.test_params = {
-            'C': np.logspace(-8, 8, num=17, base=2)
+            'C': np.logspace(-8, 8, num=17, base=2),
+            'class_weight': (None, 'balanced')
         }
 
 class SVM(SKModel):
     def __init__(self):
-        self.model = LinearSVC(dual=False, class_weight='balanced', max_iter=10000)
+        self.model = LinearSVC(dual=False, max_iter=10000)
         self.test_params = {
-            'C': np.logspace(0, 9, num=10, base=2)
+            'C': np.logspace(0, 9, num=10, base=2),
+            'class_weight': (None, 'balanced')
         }
 
 class Neighbors(SKModel):
@@ -54,11 +54,12 @@ class NaiveBayes(SKModel):
 
 class DecisionTree(SKModel):
     def __init__(self):
-        self.model = DecisionTreeClassifier(class_weight='balanced')
+        self.model = DecisionTreeClassifier()
         self.test_params = {
             'criterion': ('gini', 'entropy'),
             'max_depth': list(range(2, 8)),
             'min_samples_split': list(range(2, 8)),
             'min_samples_leaf': list(range(1, 8)),
-            'max_features': ('sqrt', 'log2', None)
+            'max_features': ('sqrt', 'log2', None),
+            'class_weight': (None, 'balanced')
         }

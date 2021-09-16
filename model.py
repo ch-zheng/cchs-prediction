@@ -3,7 +3,6 @@ import pickle
 import statistics
 import os
 from abc import ABC, abstractmethod
-from typing import Tuple
 # External
 from sklearn.model_selection import cross_val_score, GridSearchCV
 

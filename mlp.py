@@ -32,12 +32,13 @@ class MLP(Model):
         data = TensorDataset(X.cuda(), y.cuda())
         dataloader = DataLoader(
             data,
-            batch_size=32,
+            batch_size=64,
             shuffle=True
         )
         # Training loop
         self.model.train()
-        for _ in range(50000):
+        for epoch in range(50000):
+            print('Epoch', epoch, end='\r')
             for X, y in dataloader:
                 prediction = self.model(X).squeeze() # Prediction
                 loss = self.loss_func(prediction, y) # Compute loss
@@ -45,6 +46,7 @@ class MLP(Model):
                 self.optimizer.zero_grad()
                 loss.backward()
                 self.optimizer.step()
+        print()
     def predict(self, X):
         self.model.eval()
         X = torch.from_numpy(X).cuda()

@@ -6,6 +6,44 @@ import numpy as np
 
 # Description: Data transformation utilities
 
+# Pairs of landmarks to be horizontally swapped
+_swaps = (
+    # Jaw
+    (0, 16),
+    (1, 15),
+    (2, 14),
+    (3, 13),
+    (4, 12),
+    (5, 11),
+    (6, 10),
+    (7, 9),
+    # Brow
+    (17, 26),
+    (18, 25),
+    (19, 24),
+    (20, 23),
+    (21, 22),
+    # Nostrils
+    (31, 35),
+    (32, 34),
+    # Eyes
+    (36, 45),
+    (37, 44),
+    (38, 43),
+    (39, 42),
+    (40, 47),
+    (41, 46),
+    # Mouth
+    (48, 54),
+    (49, 53),
+    (50, 52),
+    (55, 59),
+    (56, 58),
+    # Inner lips
+    (61, 63),
+    (65, 67),
+)
+
 # Oversample to make samples roughly proportionate to labels
 def oversample(samples: np.ndarray, labels: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     # Invariant: Assumes positive label proportion <= 0.5
@@ -26,15 +64,23 @@ def oversample(samples: np.ndarray, labels: np.ndarray) -> Tuple[np.ndarray, np.
     return uber_samples, uber_labels
 
 # Augment facial landmark data
-# Assumed row format: (subject, group, race, age, landmarks...)
+# Assumed row format: (subject, race, age, landmarks...)
 def augment(samples: np.ndarray, labels: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    OFFSET = 3 # Columns before landmarks
     # Horizontally flip landmarks
     flipped_samples = samples.copy()
     for row in flipped_samples:
-        x_coords = row[4::2]
+        x_coords = row[OFFSET::2]
         max_x = x_coords.max()
         x_coords *= -1
         x_coords += max_x
+        # Swap landmark positions
+        for swap in _swaps:
+            a = OFFSET + 2*swap[0]
+            b = OFFSET + 2*swap[1]
+            tmp = row[a:a+2].copy()
+            row[a:a+2] = row[b:b+2]
+            row[b:b+2] = tmp.copy()
     # Append to original data
     result_samples = np.row_stack((samples, flipped_samples))
     result_labels = np.tile(labels, 2)

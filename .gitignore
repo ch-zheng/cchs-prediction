@@ -3,3 +3,5 @@
 pictures/**
 !pictures/
 pretrained/*
+
+test.py
