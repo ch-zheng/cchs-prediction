@@ -1,2 +1,0 @@
-MLP,Accuracy,"[['identity', 'logistic', 'tanh', 'relu'], ['lbfgs', 'sgd', 'adam'], [0.0001, 0.001, 0.01, 1, 10, 100], ['constant', 'invscaling', 'adaptive'], [0.0001, 0.001, 0.01], [1e-10, 1e-08, 1e-09, 1e-06]]"
-MLP,Accuracy,"[['identity', 'logistic', 'tanh', 'relu'], ['lbfgs', 'sgd', 'adam'], [0.0001, 0.001], ['constant', 'invscaling', 'adaptive'], [0.0001, 0.001, 0.01], [1e-06]]"
