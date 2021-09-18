@@ -24,6 +24,7 @@ class Logistic(SKModel):
             n_jobs=-1,
             multi_class='ovr')
         self.test_params = {
+            'penalty': ('l1', 'l2'),
             'C': np.logspace(-8, 8, num=17, base=2),
             'class_weight': (None, 'balanced')
         }

@@ -1,0 +1,10 @@
+# Ridge coefficients
+## CCHS predictors
+* y(28,29,30) => HIGH mid nose
+* y(31-5) => LOW nostrils
+* x(42,39) => CLOSE eyes? (conflict)
+* y(38,43) => LOW upper eyelid
+* y(49,53) => HIGH upper lip
+* x(38,43) => WIDE eyes? (conflict)
+* y(0,16) => HIGH jaw
+* y(21,22) => LOw brow

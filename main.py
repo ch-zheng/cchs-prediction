@@ -16,12 +16,12 @@ X = np.delete(X, 0, 1)
 
 # Model list
 models = {
-    'ridge': zoo.Ridge(),
+    #'ridge': zoo.Ridge(),
     'logistic': zoo.Logistic(),
-    'svm': zoo.SVM(),
-    'neighbors': zoo.Neighbors(),
-    'bayes': zoo.NaiveBayes(),
-    'tree': zoo.DecisionTree()
+    #'svm': zoo.SVM(),
+    #'neighbors': zoo.Neighbors(),
+    #'bayes': zoo.NaiveBayes(),
+    #'tree': zoo.DecisionTree()
 }
 
 def grid_search():
@@ -43,5 +43,15 @@ def evaluate():
         scores = model.cross_validate(X, y, splits)
         print(name, scores)
 
-grid_search()
-evaluate()
+def save():
+    for name, model in models.items():
+        # Load hyperparameters
+        with open(Path('hyperparameters', name + '.json')) as f:
+            parameters = json.load(f)
+        model.load_hyperparams(parameters)
+        model.fit(X, y)
+        model.save(Path('pretrained', name + '.pickle'))
+
+#grid_search()
+#evaluate()
+save()

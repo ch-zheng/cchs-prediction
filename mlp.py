@@ -8,6 +8,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import TensorDataset, DataLoader
 import numpy as np
+import sklearn.metrics as metrics
 
 # Description: Train a multilayer perceptron neural net.
 training = True # Training or evaluation
@@ -54,14 +55,15 @@ class MLP(Model):
             predictions = self.model(X).squeeze()
         predictions = predictions.cpu().numpy()
         return np.around(predictions)
-    def score(self, X, y) -> float:
+    def score(self, X, y) -> dict[str, float]:
         predictions = self.predict(X)
-        recall = 0
-        for i in range(len(y)):
-            if y[i] == 1 and predictions[i] == 1:
-                recall += 1
-        recall /= sum(y)
-        return recall
+        results = {
+            'accuracy': metrics.accuracy_score(y, predictions),
+            'balanced_accuracy': metrics.balanced_accuracy_score(y, predictions),
+            'recall': metrics.recall_score(y, predictions),
+            'precision': metrics.precision_score(y, predictions)
+        }
+        return results
     # Disk ops
     def save(self, file: os.PathLike):
         torch.save({

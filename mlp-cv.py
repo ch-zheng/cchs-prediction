@@ -16,7 +16,7 @@ splits = utils.create_splits(X, y, splits)
 scores = []
 for i, split in enumerate(splits):
     training = split[0]
-    test = split[0]
+    test = split[1]
     model = MLP()
     model.fit(training[0], training[1])
     score = model.score(test[0], test[1])
