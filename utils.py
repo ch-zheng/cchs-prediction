@@ -86,6 +86,18 @@ def augment(samples: np.ndarray, labels: np.ndarray) -> Tuple[np.ndarray, np.nda
     result_labels = np.tile(labels, 2)
     return result_samples, result_labels
 
+# Assumed row format: (subject, race, age, landmarks...)
+def filter_landmarks(X, targets):
+    samples = np.empty((X.shape[0], 3+2*len(targets)), dtype=X.dtype)
+    for src, dst in zip(X, samples):
+        dst[:3] = src[:3]
+        k = 3
+        for t in targets:
+            i = 3 + 2*t
+            dst[k:k+2] = src[i:i+2]
+            k += 2
+    return samples
+
 # Note: How to remove 'subject' column from samples array
 # np.delete(samples, 0, 1)
 
