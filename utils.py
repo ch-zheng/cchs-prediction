@@ -64,20 +64,18 @@ def oversample(samples: np.ndarray, labels: np.ndarray) -> Tuple[np.ndarray, np.
     return uber_samples, uber_labels
 
 # Augment facial landmark data
-# Assumed row format: (subject, race, age, landmarks...)
-def augment(samples: np.ndarray, labels: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-    OFFSET = 3 # Columns before landmarks
+def augment(samples: np.ndarray, labels: np.ndarray, offset: int) -> Tuple[np.ndarray, np.ndarray]:
     # Horizontally flip landmarks
     flipped_samples = samples.copy()
     for row in flipped_samples:
-        x_coords = row[OFFSET::2]
+        x_coords = row[offset::2]
         max_x = x_coords.max()
         x_coords *= -1
         x_coords += max_x
         # Swap landmark positions
         for swap in _swaps:
-            a = OFFSET + 2*swap[0]
-            b = OFFSET + 2*swap[1]
+            a = offset + 2*swap[0]
+            b = offset + 2*swap[1]
             tmp = row[a:a+2].copy()
             row[a:a+2] = row[b:b+2]
             row[b:b+2] = tmp.copy()

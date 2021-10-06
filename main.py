@@ -1,5 +1,6 @@
 # Local
 import utils
+import transform
 import zoo
 # Native
 from pathlib import Path
@@ -8,9 +9,12 @@ import json
 import numpy as np
 
 # Load data
+# Row format: (subject, race, age, landmarks...)
 X = np.load('data/individualized/samples.npy')
 y = np.load('data/individualized/labels.npy')
-#X, y = utils.augment(X, y)
+X, y = utils.augment(X, y, 3)
+X = transform.relativize(X, 3)
+X = transform.normalize(X, 3)
 splits = utils.split(10, X, y)
 X = np.delete(X, 0, 1)
 
@@ -20,12 +24,13 @@ models = {
     #'logistic': zoo.Logistic(),
     'svm': zoo.SVM(),
     'neighbors': zoo.Neighbors(),
-    'bayes': zoo.NaiveBayes(),
+    #'bayes': zoo.NaiveBayes(),
     'tree': zoo.DecisionTree()
 }
 
 def grid_search():
     for name, model in models.items():
+        print('Grid searching for', name)
         # Hyperparameter search
         parameters = model.grid_search(X, y, cv=splits)
         print(name, 'parameters:', parameters)
@@ -35,6 +40,7 @@ def grid_search():
 
 def evaluate():
     for name, model in models.items():
+        print('Evaluating', name)
         # Load hyperparameters
         with open(Path('hyperparameters', name + '.json')) as f:
             parameters = json.load(f)
@@ -45,6 +51,7 @@ def evaluate():
 
 def save():
     for name, model in models.items():
+        print('Saving', name)
         # Load hyperparameters
         with open(Path('hyperparameters', name + '.json')) as f:
             parameters = json.load(f)

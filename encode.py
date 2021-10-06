@@ -46,10 +46,8 @@ def encode(input_table: str) -> Tuple[np.ndarray, np.ndarray]:
             # Standardize landmarks to [0, 1]
             landmarks_x = landmarks[::2]
             landmarks_x -= landmarks_x.min()
-            landmarks[::2] = landmarks_x
             landmarks_y = landmarks[1::2]
             landmarks_y -= landmarks_y.min()
-            landmarks[1::2] = landmarks_y
             landmarks /= landmarks.max()
             # Aggregate features
             sample = np.empty(3 + landmarks.size, dtype=np.single)

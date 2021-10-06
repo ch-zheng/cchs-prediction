@@ -32,6 +32,8 @@ targets = {
     18,
     40,
     47,
+}
+'''
     55,
     59,
     5,
@@ -42,6 +44,7 @@ targets = {
     32,
     34
 }
+'''
 
 X = utils.filter_landmarks(X, targets)
 

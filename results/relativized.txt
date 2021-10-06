@@ -1,0 +1,20 @@
+Grid searching for ridge
+ridge parameters: {'alpha': 0.5, 'class_weight': 'balanced'}
+Grid searching for svm
+svm parameters: {'C': 2.0, 'class_weight': 'balanced'}
+Grid searching for neighbors
+neighbors parameters: {'n_neighbors': 9, 'p': 1, 'weights': 'distance'}
+Grid searching for tree
+tree parameters: {'class_weight': 'balanced', 'criterion': 'entropy', 'max_depth': 6, 'max_features': None, 'min_samples_leaf': 5, 'min_samples_split': 2}
+Evaluating ridge
+ridge {'recall': (0.8336662861491628, 0.09772121639035627), 'precision': (0.5836615108825927, 0.03231874443224164), 'accuracy': (0.8081699346405229, 0.02434358358590377), 'balanced_accuracy': (0.8166016615931, 0.045138377498613796)}
+Evaluating svm
+svm {'recall': (0.8247621765601217, 0.10175810538497902), 'precision': (0.5887520855488266, 0.02731204235776388), 'accuracy': (0.8107668925413303, 0.021144951878478025), 'balanced_accuracy': (0.8153903475393202, 0.04490535371118964)}
+Evaluating neighbors
+neighbors {'recall': (0.40879946727549465, 0.05478215178255381), 'precision': (0.561702328257882, 0.047999866689125245), 'accuracy': (0.7707828719723183, 0.017681393031129557), 'balanced_accuracy': (0.6508117706747844, 0.028490671166678427)}
+Evaluating tree
+tree {'recall': (0.6785958904109589, 0.10383721039087813), 'precision': (0.4299132020576299, 0.04329190246922541), 'accuracy': (0.6949490580545944, 0.03508346559452571), 'balanced_accuracy': (0.6897609081684424, 0.04982320680351738)}
+Saving ridge
+Saving svm
+Saving neighbors
+Saving tree
