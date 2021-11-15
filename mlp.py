@@ -1,5 +1,6 @@
 from model import Model
 # Native
+import math
 import os
 #from pathlib import Path
 # External
@@ -14,13 +15,13 @@ import sklearn.metrics as metrics
 training = True # Training or evaluation
 
 class MLP(Model):
-    def __init__(self):
+    def __init__(self, features: int):
         self.model = nn.Sequential(
-            nn.Linear(138, 100),
+            nn.Linear(features, 2*math.floor(features/3)),
             nn.ReLU(),
-            nn.Linear(100, 60),
+            nn.Linear(2*math.floor(features/3), math.floor(features/3)),
             nn.ReLU(),
-            nn.Linear(60, 1),
+            nn.Linear(math.floor(features/3), 1),
             nn.Sigmoid(),
         )
         self.model.cuda()
@@ -38,7 +39,7 @@ class MLP(Model):
         )
         # Training loop
         self.model.train()
-        for epoch in range(50000):
+        for epoch in range(20000):
             print('Epoch', epoch, end='\r')
             for X, y in dataloader:
                 prediction = self.model(X).squeeze() # Prediction

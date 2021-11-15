@@ -1,6 +1,6 @@
 # Local
 import utils
-import transform
+#import transform
 import zoo
 # Native
 from pathlib import Path
@@ -10,12 +10,21 @@ import numpy as np
 
 # Load data
 # Row format: (subject, race, age, landmarks...)
+'''
 X = np.load('data/individualized/samples.npy')
 y = np.load('data/individualized/labels.npy')
 X, y = utils.augment(X, y, 3)
 X = transform.relativize(X, 3)
 X = transform.normalize(X, 3)
 splits = utils.split(10, X, y)
+X = np.delete(X, 0, 1)
+'''
+
+X = np.load('data/pruned/samples.npy')
+y = np.load('data/pruned/labels.npy')
+#X, y = utils.augment(X, y, 3)
+splits = utils.split(10, X, y)
+subjects = X[:, 0]
 X = np.delete(X, 0, 1)
 
 # Model list
@@ -59,6 +68,18 @@ def save():
         model.fit(X, y)
         model.save(Path('pretrained', name + '.pickle'))
 
-grid_search()
-evaluate()
-save()
+def test():
+    for name, model in models.items():
+        print('Evaluating', name)
+        # Load hyperparameters
+        with open(Path('hyperparameters', name + '.json')) as f:
+            parameters = json.load(f)
+        model.load_hyperparams(parameters)
+        # Evaluation
+        scores = model.cross_validate(X, y, splits)
+        print(name, scores)
+
+#grid_search()
+#evaluate()
+#save()
+test()

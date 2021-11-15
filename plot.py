@@ -30,8 +30,7 @@ def test():
     plt.ion()
     fig, ax = plt.subplots()
 
-    for row in X:
-        ax.clear()
+    for row in enumerate(X):
         ax.scatter(row[3::2], row[4::2])
         ax.set_xlim(0, 1)
         ax.set_ylim(1, 0)
@@ -40,4 +39,23 @@ def test():
         fig.canvas.flush_events()
         time.sleep(0.2)
 
-test()
+def test2():
+    X = np.load('data/pruned/samples.npy')
+    y = np.load('data/pruned/labels.npy')
+
+    # Plot setup
+    fig, ax = plt.subplots()
+
+    ii = np.arange(len(y))
+    np.random.shuffle(ii)
+    for i in ii[:200]:
+        row = X[i]
+        color = '#ff0000' if y[i] == 1 else '#00ff00'
+        ax.scatter(row[3::2], row[4::2], c=color, alpha=0.5, s=1)
+        ax.set_xlim(0, 1)
+        ax.set_ylim(1, 0)
+        ax.set_aspect('equal')
+
+    fig.savefig('plot-pruned')
+
+test2()
